@@ -48,7 +48,7 @@ def add_meme(command):
     meme_params = unquote(command).split("#")
     if not meme_params[1] in list_memes("list"):
         config_file = open("bot_config.cfg", "a")
-        config_file.write(meme_params[1] + "=" + (meme_params[2])[1:-1] + "\n")
+        config_file.write(meme_params[1] + "=" + (meme_params[2]).strip()[1:-1] + "\n")
         config_file.close()
         read_config()
         return "Meme added to bot!"
@@ -65,7 +65,7 @@ def incoming_request():
         request_data = create_dict(inc_req)
         read_config()
         if verify_command(request_data["token"]):
-            requested = (request_data["text"].split(":")[1])
+            requested = (request_data["text"].split(":")[1].strip())
             if requested == "list":
                 meme_json = jsonify({'text': list_memes()})
                 logging.info("User: " + request_data["user_name"] + " -- Request: List")
