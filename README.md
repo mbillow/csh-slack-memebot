@@ -13,6 +13,10 @@ BOT_KEY = slack_api_key_goes_here
 
 [MEME_LIST]
 name = http://www.example.com/meme.jpg
+
+[CHANNELS]
+channel_name = true
+sample_name = false
 ```
 
 Slack Bot Syntax
