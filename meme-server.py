@@ -66,22 +66,24 @@ def incoming_request():
         inc_req = request.get_data()
         request_data = create_dict(inc_req)
         read_config()
+        info = lambda action: logging.info("User: {} -- {}".format(request_data["user_name"], action)
+        
         if verify_command(request_data["token"]):
             requested = (request_data["text"].split(":")[1].strip())
             if requested == "list":
                 meme_json = jsonify({'text': list_memes()})
-                logging.info("User: " + request_data["user_name"] + " -- Request: List")
+                info("Request: List")
             elif requested.startswith("add"):
                 meme_json = jsonify({'text': add_meme(request_data["text"])})
-                logging.info("User: " + request_data["user_name"] + " -- Added Meme")
+                info("Added Meme")
             elif requested in meme_list and channel_list[request_data["channel_name"]]:
                 meme_json = jsonify({'text': config.get("MEME_LIST", requested)})
-                logging.info("User: " + request_data["user_name"] + " -- Send Meme: " + requested)
+                info("Send Meme: {}".format(requested))
             elif not channel_list[request_data["channel_name"]]:
                 meme_json = jsonify({'text': "Memes have been disabled in this channel."})
             else:
                 meme_json = jsonify({'text': "No meme found, feel free to add it though!"})
-                logging.warning("User: " + request_data["user_name"] + " -- Meme: " + requested + " NOT FOUND!")
+                logging.warning("User: {} -- Meme: {} not found", request_data["user_name"], requested)
             print meme_json
             return meme_json
 
